@@ -1,5 +1,5 @@
 // Rana Seif
-// ENCE 3150 - Lab 3
+// ENCE 3210 - Lab 3
 
 // Defining Values for RED_LED, GREEN_LED, BUTTON and Timer Compare values as macros
 
