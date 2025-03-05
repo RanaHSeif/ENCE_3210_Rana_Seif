@@ -53,7 +53,7 @@ void loop() {
   display.setTextColor(SSD1306_WHITE);
   if (solarPanel > battery || 1 == charging)
   {
-    if (1023 < battery)
+    if (1024 > battery)
     {
       charging = 0;   // Indicates charging is done
     }
@@ -61,12 +61,12 @@ void loop() {
     display.setCursor(10,0);
     display.print("Solar Panel to Battery");
   }
-  else if (solarPanel<511.5){    // The max value for analogRead is 1023. 1023/2 = 511.5 is the equivalent of 5V/2=2.5V
+  else if (solarPanel<512){    // The max value for analogRead is 1024. 1024/2 = 512 is the equivalent of 5V/2=2.5V
     display.setTextSize(1); //Draw 1X-scale text
     display.setCursor(10,0);
     display.print("Battery to System");
   }
-  else if (battery>511.5){
+  else if (battery>512){
     display.setTextSize(1); //Draw 1X-scale text
     display.setCursor(10,0);
     display.print("Solar Panel to System");
