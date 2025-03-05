@@ -3,8 +3,8 @@
 
 #define TEMP_SENSOR A0  // Analog pin for temperature sensor
 #define FAN_LEVEL 9       // PWM pin for fan (LED simulation)
-#define ONOFF_BUTTON 2       // Button 1: Fan ON/OFF (INT0)
-#define FAN_SENSITIVITY_BUTTON 3       // Button 2: Sensitivity control (INT1)
+#define ONOFF_BUTTON 2       // Button 1: Fan ON/OFF
+#define FAN_SENSITIVITY_BUTTON 3       // Button 2: Sensitivity control
 
 #define TIMER_COMPARE_VALUE 25000;     // (16MHz*0.05s)/64 = 25000
 
