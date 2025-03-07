@@ -1,10 +1,14 @@
+// Microprocessors I - Lab 4 - Problem 1
+// Code written by: Rana Seif
+// Converts several values from Analog to Digital and then prints that quatized value.
+
 #define BITSIZE 14
 
 float gVref = 3;
-float gVin = 2.752;
+float gVin [4] = [0.42, 0.83, 1.65, 2.752];
 float gThresh;
 
-float gQuantized = 0;
+float gQuantized [4] = 0;
 
 
 void setup() {
@@ -22,23 +26,27 @@ void loop() {
   int bits[BITSIZE];
   int bitVal;
   
-  for(count=0; count<BITSIZE; count++)
+  for (i=0; i<4 ; i++)
   {
-    gVref /= 2;
-    if(gVin>=gThresh)
+    for(count=0; count<BITSIZE; count++)
     {
-      gThresh += gVref;
-      bits[count] = 1;
-      gQuantized += 2*gVref;
-    }
-    else
-    {
-      gThresh -= gVref;
-      bits[count] = 0;
-    }
+      gVref /= 2;
+      if(gVin[i]>=gThresh)
+      {
+        gThresh += gVref;
+        bits[count] = 1;
+        gQuantized[i] += 2*gVref;
+      }
+      else
+      {
+        gThresh -= gVref;
+        bits[count] = 0;
+      }
 
+    }
+    Serial.print("\nQuantized Voltage is: ");
+    Serial.print(gQuantized[i]);
+    Serialprint(" for Vin: ");
+    Serial.println(gVin[i]);   
   }
-  Serial.println("\nQuantized Voltage is: ");
-  Serial.print(gQuantized);
-
 }
