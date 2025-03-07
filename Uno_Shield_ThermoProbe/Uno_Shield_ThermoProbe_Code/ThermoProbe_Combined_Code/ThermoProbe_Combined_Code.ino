@@ -115,7 +115,7 @@ char gBacklightFlag = 1;      // 0 is off, 1 is on
 
 void setup() {
   // Init Serial (TMP)
-  Serial.begin(38400);
+  Serial.begin(9600);
 
   noInterrupts();  // Disable Interrupts until Setup is Complete
 
@@ -150,13 +150,16 @@ void setup() {
   * Timer 2 (Units and Cal - 8bits) Setup *
   ****************************************/
 
-  // Speed of Timer 1 = 16MHz/256 = 62.5kHz (1.6us)
+  // Speed of Timer 2 = 16MHz/256 = 62.5kHz (1.6us)
   TCCR2A = 0;                   // Resets Timer2 Control Register A to begin with
   TCCR2B = 0;                   // Resets Timer2 Control Register B to begin with
   OCR2A = TIMER2_COMPARE_VALUE;  // Set Timer Compare to 250 to be able to reset at 1s to be run 3 times
   TCCR2B |= (1 << WGM21);       // CTC mode
   // TCCR2B |= (1 << CS21) | (1 << CS22);        // Set prescaler to 256  --> Disabled to only start when units or cal buttons are pressed
   TIMSK2 |= (1 << OCIE2A);      // Enable Timer2 compare interrupt
+
+  // Enable Interrupts
+  interrupts();
 
   /************
   * MPU Setup *
@@ -200,12 +203,10 @@ void setup() {
   ********************/
   sensors.begin();
 
-  // Enable Interrupts
-  interrupts();
-
 }
 
 void loop() {
+  display.clearDisplay();
   switch(gDeviceState){
 
     case IDLE_STATE:
@@ -287,12 +288,12 @@ void isr_lock_button()
   if (1 == gLockFlag)
   {
     // Unlock - Start Timer 1 (Read Sensor)
-    TCCR2B |= (1 << CS21) | (1 << CS22);
+    TCCR1B |= (1 << CS12);
   }
   else
   {
     // Lock - Stop Timer 1 (Stop Reading Sensor)
-    TCCR2B |= (0 << CS21) | (0 << CS22);
+    TCCR1B &= (0 << CS12);
   }
 }
 
@@ -326,7 +327,8 @@ ISR (TIMER2_COMPA_vect)
     if (1 == digitalRead(UNITS_BUTTON))
     {
       gUnitsFlag = !gUnitsFlag;
-    }
+    }  
+    TCCR2B &= (0 << CS21) | (0 << CS22);    // Stops Timer    
   }
 }
 
@@ -347,13 +349,9 @@ void checkButtons()
   }
 
   // Check Units Button and enters correct state to change units
-  if (1 == digitalRead(UNITS_BUTTON))
+  if(1 == digitalRead(UNITS_BUTTON))
   {
-    delay (50); // To Debounce
-    if(1 == digitalRead(UNITS_BUTTON))
-    {
-      gCounterTimer = 0; // Reset counter
-      TCCR2B |= (1 << CS21) | (1 << CS22);    // Starts Timer
-    }
+    gCounterTimer = 0; // Reset counter
+    TCCR2B |= (1 << CS21) | (1 << CS22);    // Starts Timer
   }
 }
