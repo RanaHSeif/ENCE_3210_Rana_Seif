@@ -142,8 +142,8 @@ void setup() {
   TCCR1B = 0;                   // Resets Timer1 Control Register B to begin with
   OCR1A = TIMER1_COMPARE_VALUE;  // Set Timer Compare to 62500
   TCCR1B |= (1 << WGM12);       // CTC mode
-  // Start Timer
-  TCCR1B |= (1 << CS12);        // Set prescaler to 256 
+  // Start Timer only when turns on
+  //  TCCR1B |= (1 << CS12);        // Set prescaler to 256 
   TIMSK1 |= (1 << OCIE1A);      // Enable Timer1 compare interrupt
 
   /****************************************
@@ -287,12 +287,12 @@ void isr_lock_button()
   if (1 == gLockFlag)
   {
     // Unlock - Start Timer 1 (Read Sensor)
-    TCCR1B |= (1 << CS12);
+    TCCR2B |= (1 << CS21) | (1 << CS22);
   }
   else
   {
     // Lock - Stop Timer 1 (Stop Reading Sensor)
-    TCCR1B = 0;
+    TCCR2B |= (0 << CS21) | (0 << CS22);
   }
 }
 
