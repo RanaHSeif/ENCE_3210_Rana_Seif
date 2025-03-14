@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "TMP36GT9")(type "KiCad")(uri "${KIPRJMOD}/Components/TMP36GT9/TMP36GT9.kicad_sym")(options "")(descr ""))
+  (lib (name "SSCDANV015PAAA5")(type "KiCad")(uri "${KIPRJMOD}/Components/Honeywell_Pressure/SSCDANV015PAAA5.kicad_sym")(options "")(descr ""))
+  (lib (name "DEV-13955")(type "KiCad")(uri "${KIPRJMOD}/Components/DEV-13955_OpenLogger/DEV-13955.kicad_sym")(options "")(descr ""))
+)
